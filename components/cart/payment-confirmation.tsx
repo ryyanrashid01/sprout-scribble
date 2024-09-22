@@ -38,7 +38,7 @@ export default function PaymentConfirmation({
               animationData={orderConfirmed}
               loop={false}
             />
-            <h2 className="flex gap-2 items-center text-sm text-muted-foreground text-center font-bold bg-green-200 text-green-900 p-2 rounded-md">
+            <h2 className="flex gap-2 items-center text-sm text-muted-foreground text-center font-bold bg-green-100 text-green-950 p-2 rounded-md">
               <PackageCheck size={24} /> Congratulations! Your order has been
               placed.
             </h2>

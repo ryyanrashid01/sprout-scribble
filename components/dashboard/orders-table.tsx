@@ -126,15 +126,17 @@ export default function OrdersTable({
                               </Button>
                             </DialogTrigger>
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Link
-                              href={`/dashboard/orders/receipts/${order.id}`}
-                            >
-                              <Button variant={"ghost"} className="w-full">
-                                View receipt
-                              </Button>
-                            </Link>
-                          </DropdownMenuItem>
+                          {order.status === "confirmed" && (
+                            <DropdownMenuItem>
+                              <Link
+                                href={`/dashboard/orders/receipts/${order.id}`}
+                              >
+                                <Button variant={"ghost"} className="w-full">
+                                  View receipt
+                                </Button>
+                              </Link>
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                       <DialogContent className="max-w-2xl">
