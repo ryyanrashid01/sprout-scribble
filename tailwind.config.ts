@@ -1,13 +1,15 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
+import { withUt } from "uploadthing/tw";
 
-const config = {
+const config = withUt({
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx,mdx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -18,6 +20,12 @@ const config = {
       },
     },
     extend: {
+      maxWidth: {
+        "8xl": "88rem",
+      },
+      minHeight: {
+        "70vh": "70vh",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -67,14 +75,19 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+}) satisfies Config;
 
-export default config
+export default config;

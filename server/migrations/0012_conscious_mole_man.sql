@@ -1,0 +1,1 @@
+ALTER TABLE "variantImages" RENAME COLUMN "color" TO "url";

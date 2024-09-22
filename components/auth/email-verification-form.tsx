@@ -10,6 +10,7 @@ import { FormError } from "./form-error";
 
 export const EmailVerificationForm = () => {
   const token = useSearchParams().get("token");
+  console.log(token);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

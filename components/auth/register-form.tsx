@@ -23,6 +23,8 @@ import { useState } from "react";
 import { emailRegister } from "@/server/actions/email-register";
 import { FormSuccess } from "./form-success";
 import { FormError } from "./form-error";
+import { LoaderCircle } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 export const RegisterForm = () => {
   const form = useForm({
@@ -67,7 +69,12 @@ export const RegisterForm = () => {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="John Doe" type="text" />
+                        <Input
+                          {...field}
+                          placeholder="John Doe"
+                          disabled={status === "executing"}
+                          type="text"
+                        />
                       </FormControl>
                       <FormDescription />
                       <FormMessage />
@@ -85,6 +92,7 @@ export const RegisterForm = () => {
                           {...field}
                           placeholder="yourname@company.com"
                           type="email"
+                          disabled={status === "executing"}
                           autoComplete="email"
                         />
                       </FormControl>
@@ -104,6 +112,7 @@ export const RegisterForm = () => {
                           {...field}
                           placeholder="********"
                           type="password"
+                          disabled={status === "executing"}
                           autoComplete="current-password"
                         />
                       </FormControl>
@@ -125,17 +134,24 @@ export const RegisterForm = () => {
               </div>
               <Button
                 type="submit"
+                disabled={status === "executing"}
                 className={cn(
                   "w-full my-2",
-                  status === "executing" ? "animate-pulse" : ""
+                  status === "executing"
+                    ? "animate-pulse cursor-not-allowed"
+                    : ""
                 )}
               >
-                Register
+                {status === "executing" ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  "Register"
+                )}
               </Button>
             </form>
           </Form>
         </div>
-        <hr className="w-48 h-1 mx-auto mt-4 bg-gray-300 border-0 rounded md:my-4 dark:bg-gray-700" />
+        <Separator />
       </AuthCard>
     </div>
   );

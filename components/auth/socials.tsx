@@ -17,14 +17,6 @@ export default function Socials() {
         <p>Sign in with Google</p>
         <FcGoogle className="w-5 h-5" />
       </Button>
-      <Button
-        variant={"outline"}
-        className="flex w-full gap-2"
-        onClick={() => signIn("github", { redirect: false, callbackUrl: "/" })}
-      >
-        <p>Sign in with GitHub</p>
-        <FaGithub className="w-5 h-5" />
-      </Button>
     </div>
   );
 }

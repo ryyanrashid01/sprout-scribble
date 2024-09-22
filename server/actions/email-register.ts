@@ -20,7 +20,6 @@ export const emailRegister = actionClient
       where: eq(users.email, email),
     });
 
-    // Check if the user is already in the database then say its in use
     if (existingUser) {
       if (!existingUser.emailVerified) {
         const verificationToken = await generateEmailVerificationToken(email);
@@ -34,7 +33,6 @@ export const emailRegister = actionClient
       return { error: "Email already in use" };
     }
 
-    // If the user is not in the database
     await db.insert(users).values({
       email,
       name,

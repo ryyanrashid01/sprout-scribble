@@ -1,9 +1,9 @@
 import { auth } from "@/server/auth";
 import { UserButton } from "./user-button";
-import { Button } from "../ui/button";
 import Link from "next/link";
-import { LogIn } from "lucide-react";
 import Logo from "./logo";
+import LoginButton from "./login-button";
+import CartDrawer from "@/components/cart/cart-drawer";
 
 export default async function Nav() {
   const session = await auth();
@@ -11,23 +11,19 @@ export default async function Nav() {
   return (
     <header>
       <nav className="py-8">
-        <ul className="flex justify-between">
-          <li>
-            <Link href="/">
+        <ul className="flex justify-between items-center md:gap-8 gap-4 md:flex-row flex-row">
+          <li className="flex flex-1">
+            <Link href="/" aria-label="sprout and scribble logo">
               <Logo />
             </Link>
           </li>
+          <li className="relative flex items-center group">
+            <CartDrawer session={session} />
+          </li>
           {!session ? (
-            <li>
-              <Button asChild>
-                <Link className="flex gap-2" href="/auth/login">
-                  <LogIn size={16} />
-                  <span>Login</span>
-                </Link>
-              </Button>
-            </li>
+            <LoginButton />
           ) : (
-            <li>
+            <li className="flex items-center">
               <UserButton user={session?.user} expires={session?.expires} />
             </li>
           )}

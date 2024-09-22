@@ -7,6 +7,9 @@ import {
 } from "@/components/ui/card";
 import Socials from "./socials";
 import { BackButton } from "./back-button";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 type CardWrapperProps = {
   children: React.ReactNode;
@@ -23,9 +26,15 @@ export const AuthCard = ({
   backButtonLabel,
   showSocials,
 }: CardWrapperProps) => {
+  const pathname = usePathname();
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="gap-3">
+        {pathname === "/auth/login" && (
+          <Link href={"/"}>
+            <ArrowLeft />
+          </Link>
+        )}
         <CardTitle>{cardTitle}</CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
