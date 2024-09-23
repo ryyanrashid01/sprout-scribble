@@ -3,10 +3,12 @@
 import * as z from "zod";
 import { createSafeActionClient } from "next-safe-action";
 import { db } from "@/server";
-import { productVariants } from "@/server/schema";
+import { productVariants, variantImages } from "@/server/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { algoliasearch } from "algoliasearch";
+import getIdFromUrl from "@/lib/uploadthing-file-id";
+import { utapi } from "../uploadthing";
 
 const actionClient = createSafeActionClient();
 const client = algoliasearch(
@@ -18,10 +20,43 @@ export const deleteVariant = actionClient
   .schema(z.object({ id: z.number() }))
   .action(async ({ parsedInput: { id } }) => {
     try {
+      console.log(
+        "#############################################################"
+      );
+      console.log(
+        "#############################################################"
+      );
+      const variantImagesData = await db.query.variantImages.findMany({
+        where: eq(variantImages.variantId, id),
+      });
+
+      const variantImageUrls = variantImagesData.map(
+        (variantImage) => getIdFromUrl(variantImage.url) || ""
+      );
+
+      console.log("ID: ", id);
+      console.log("VariantImagesData: ", variantImagesData);
+      console.log("variantImageUrls: ", variantImageUrls);
+
       const deletedVariant = await db
         .delete(productVariants)
         .where(eq(productVariants.id, id))
         .returning();
+
+      if (variantImageUrls) {
+        console.log("Awaiting...");
+
+        await utapi.deleteFiles(variantImageUrls);
+
+        console.log("Done");
+      }
+
+      console.log(
+        "#############################################################"
+      );
+      console.log(
+        "#############################################################"
+      );
 
       client.deleteObject({
         indexName: "products",

@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -148,7 +147,7 @@ export default function SettingsCard(session: SettingsForm) {
                           setAvatarUploading(false);
                           return;
                         }}
-                        onClientUploadComplete={(res) => {
+                        onClientUploadComplete={async (res) => {
                           form.setValue("image", res[0].url!);
                           setAvatarUploading(false);
                           setAvatarUploaded(true);

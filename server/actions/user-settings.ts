@@ -8,6 +8,8 @@ import { eq } from "drizzle-orm";
 import { users } from "@/server/schema";
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
+import getIdFromUrl from "@/lib/uploadthing-file-id";
+import { utapi } from "../uploadthing";
 
 const actionClient = createSafeActionClient();
 
@@ -53,6 +55,9 @@ export const userSettings = actionClient
       values.oldPassword = hashedPassword;
       values.newPassword = undefined;
     }
+
+    const oldUserImageUrl = user.user.image;
+
     const updatedUser = await db
       .update(users)
       .set({
@@ -63,6 +68,13 @@ export const userSettings = actionClient
         image: values.image,
       })
       .where(eq(users.id, dbUser.id));
+
+    if (oldUserImageUrl && oldUserImageUrl !== values.image) {
+      const oldUserImageId = getIdFromUrl(oldUserImageUrl);
+      if (oldUserImageId) await utapi.deleteFiles(oldUserImageId);
+    }
+
     revalidatePath("/dashboard/settings");
+
     return { success: "Settings updated" };
   });
