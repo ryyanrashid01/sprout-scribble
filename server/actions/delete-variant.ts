@@ -20,12 +20,6 @@ export const deleteVariant = actionClient
   .schema(z.object({ id: z.number() }))
   .action(async ({ parsedInput: { id } }) => {
     try {
-      console.log(
-        "#############################################################"
-      );
-      console.log(
-        "#############################################################"
-      );
       const variantImagesData = await db.query.variantImages.findMany({
         where: eq(variantImages.variantId, id),
       });
@@ -34,29 +28,14 @@ export const deleteVariant = actionClient
         (variantImage) => getIdFromUrl(variantImage.url) || ""
       );
 
-      console.log("ID: ", id);
-      console.log("VariantImagesData: ", variantImagesData);
-      console.log("variantImageUrls: ", variantImageUrls);
-
       const deletedVariant = await db
         .delete(productVariants)
         .where(eq(productVariants.id, id))
         .returning();
 
       if (variantImageUrls) {
-        console.log("Awaiting...");
-
         await utapi.deleteFiles(variantImageUrls);
-
-        console.log("Done");
       }
-
-      console.log(
-        "#############################################################"
-      );
-      console.log(
-        "#############################################################"
-      );
 
       client.deleteObject({
         indexName: "products",
